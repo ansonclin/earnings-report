@@ -1,3 +1,20 @@
+"""
+For each earnings event, guess its reaction size using that same ticker's
+own history - no real model, no features.
+
+pct_reaction was already calculated back in dataset_builder.py, for every
+row. This file doesn't recompute anything - it just reads that column.
+
+How the guess is made: filter dataset down to that ticker's other rows
+with an earlier earnings_date, take just their pct_reaction column, and
+average it (abs value, since only size matters, not direction). That
+average is the guess.
+
+Then check how wrong each guess was against the real pct_reaction for that
+row, and average all those errors into one MAE score - the number a real
+model has to beat later.
+"""
+
 import pandas as pd
 from dataset_builder import dataset
 
